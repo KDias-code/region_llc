@@ -38,6 +38,10 @@ func ParseFromEntity(data Entity) (res Response) {
 		Title:    *data.Title,
 		ActiveAt: *data.ActiveAt,
 	}
+
+	if data.Status != nil {
+		res.Status = *data.Status
+	}
 	return
 }
 

@@ -52,9 +52,14 @@ func (r *TasksRepository) Status(ctx context.Context, id string, data tasks.Enti
 	if _, ok := r.db[id]; !ok {
 		return store.ErrorNotFound
 	}
+	src := r.db[id]
 
-	status := true
-	data.Status = &status
+	if data.Status != nil {
+		src.Status = data.Status
+	}
+
+	r.db[id] = src
+
 	return
 }
 
@@ -77,7 +82,21 @@ func (r *TasksRepository) Update(ctx context.Context, id string, data tasks.Enti
 	if _, ok := r.db[id]; !ok {
 		return store.ErrorNotFound
 	}
-	r.db[id] = data
+	src := r.db[id]
+
+	if data.Title != nil {
+		src.Title = data.Title
+	}
+
+	if data.ActiveAt != nil {
+		src.ActiveAt = data.ActiveAt
+	}
+
+	if data.Status != nil {
+		src.Status = data.Status
+	}
+
+	r.db[id] = src
 
 	return
 }
