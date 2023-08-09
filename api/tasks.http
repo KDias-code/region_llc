@@ -1,0 +1,17 @@
+### List of products from the tasks
+GET http://localhost/api/todo-list/tasks
+
+### Add a new product to the task
+POST http://localhost/api/todo-list/tasks
+Content-Type: application/json
+
+
+### Read the product from the store
+GET http://localhost/api/todo-list/tasks/1
+
+### Update the product in the store
+PUT http://localhost/api/todo-list/tasks/1
+Content-Type: application/json
+
+### Delete the product from the store
+DELETE http://localhost/api/todo-list/tasks/1
