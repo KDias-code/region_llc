@@ -3,9 +3,9 @@ package postgres
 import (
 	"context"
 	"fmt"
-	"strings"
-
 	"github.com/jmoiron/sqlx"
+	"strings"
+	"time"
 
 	"product-service/internal/domain/tasks"
 )
@@ -22,11 +22,14 @@ func NewTasksRepository(db *sqlx.DB) tasks.Repository {
 
 func (s *TasksRepository) Select(ctx context.Context) (dest []tasks.Entity, err error) {
 	query := `
-		SELECT id, title, active_at
+		SELECT id, title, status, active_at
 		FROM tasks
+		WHERE DATE(active_at) = DATE($1)
 		ORDER BY id`
 
-	err = s.db.SelectContext(ctx, &dest, query)
+	currentDate := time.Now().Format("2006-01-02")
+
+	err = s.db.SelectContext(ctx, &dest, query, currentDate)
 
 	return
 }
@@ -47,11 +50,13 @@ func (s *TasksRepository) Create(ctx context.Context, data tasks.Entity) (id str
 func (s *TasksRepository) Status(ctx context.Context, id string, data tasks.Entity) (err error) {
 	query := `
 		UPDATE tasks
-		SET status = true, active_at = CURRENT_TIMESTAMP
+		SET status = true
 		WHERE id = $1
 	`
 
 	_, err = s.db.ExecContext(ctx, query, id)
+	trueValue := true
+	data.Status = &trueValue
 	return err
 }
 

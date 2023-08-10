@@ -3,8 +3,10 @@ package memory
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"product-service/pkg/store"
 	"sync"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -26,9 +28,13 @@ func (r *TasksRepository) Select(ctx context.Context) (dest []tasks.Entity, err 
 	r.RLock()
 	defer r.RUnlock()
 
-	dest = make([]tasks.Entity, 0, len(r.db))
+	currentDate := time.Now().Format("2006-01-02")
+	fmt.Println(currentDate)
+
 	for _, data := range r.db {
-		dest = append(dest, data)
+		if *data.ActiveAt == currentDate && (data.Status == nil || !*data.Status) {
+			dest = append(dest, data)
+		}
 	}
 
 	return

@@ -3,5 +3,6 @@ CREATE TABLE IF NOT EXISTS tasks(
                                     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                                     id          UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
     title       TEXT NOT NULL,
-    activeAt    TIMESTAMP
+    active_at    TIMESTAMP,
+    status bool
     );
