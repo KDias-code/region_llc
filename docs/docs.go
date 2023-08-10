@@ -99,7 +99,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "tasks"
                 ],
                 "summary": "Update the tasks in the database",
                 "parameters": [

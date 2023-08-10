@@ -2,7 +2,7 @@
 FROM golang:1.20.4-alpine as builder
 WORKDIR /build
 COPY . /build
-RUN CGO_ENABLED=0 GOOS=linux go build -o app .
+RUN CGO_ENABLED=0 GOOS=linүux go build -o app .
 
 # generate clean, final image for end users
 FROM alpine:3.18.0 as hoster

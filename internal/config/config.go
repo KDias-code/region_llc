@@ -46,8 +46,8 @@ type (
 	}
 )
 
-// New populates Configs struct with values from config file
-// located at filepath and environment variables.
+// Новое заполняет структуру Configs значениями из файла конфигурации
+// расположен в пути к файлу и переменных среды.
 func New() (cfg Configs, err error) {
 	root, err := os.Getwd()
 	if err != nil {

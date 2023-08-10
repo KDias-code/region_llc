@@ -27,7 +27,7 @@ type Database struct {
 	Client *sqlx.DB
 }
 
-// NewDatabase established connection to a database instance using provided URI and auth credentials.
+// Новая база данных установила подключение к экземпляру базы данных, используя предоставленный URL-адрес и учетные данные для авторизации.
 func NewDatabase(schema, dataSourceName string) (database *Database, err error) {
 	database = &Database{
 		schema:         schema,

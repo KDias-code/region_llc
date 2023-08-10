@@ -17,27 +17,27 @@ type Dependencies struct {
 	CatalogueService *catalogue.Service
 }
 
-// Configuration is an alias for a function that will take in a pointer to a Handler and modify it
+// Конфигурация — это псевдоним функции, которая принимает указатель на обработчик и изменяет его.
 type Configuration func(h *Handler) error
 
-// Handler is an implementation of the Handler
+// Хендлер является реализацией хендлера
 type Handler struct {
 	dependencies Dependencies
 
 	HTTP *chi.Mux
 }
 
-// New takes a variable amount of Configuration functions and returns a new Handler
-// Each Configuration will be called in the order they are passed in
+// New принимает переменное количество функций конфигурации и возвращает новый обработчик.
+// Каждая конфигурация будет вызываться в порядке их передачи.
 func New(d Dependencies, configs ...Configuration) (h *Handler, err error) {
-	// Create the handler
+	// создаем хендлер
 	h = &Handler{
 		dependencies: d,
 	}
 
-	// Apply all Configurations passed in
+	// Применить все переданные конфигурации
 	for _, cfg := range configs {
-		// Pass the service into the configuration function
+		// Передать сервис в функцию конфигурации
 		if err = cfg(h); err != nil {
 			return
 		}
@@ -46,10 +46,10 @@ func New(d Dependencies, configs ...Configuration) (h *Handler, err error) {
 	return
 }
 
-// WithHTTPHandler applies a http handler to the Handler
+// WithHTTPHandler применяет обработчик http к обработчику
 func WithHTTPHandler() Configuration {
 	return func(h *Handler) (err error) {
-		// Create the http handler, if we needed parameters, such as connection strings they could be inputted here
+		// Создайте обработчик http, если нам нужны параметры, такие как строки подключения, их можно ввести здесь.
 		h.HTTP = router.New()
 
 		docs.SwaggerInfo.BasePath = "/api/todo-list"

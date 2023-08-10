@@ -35,10 +35,10 @@ func (h *TasksHandler) Routes() chi.Router {
 	return r
 }
 
-// List of products from the database
+// Список сегодняшних задач
 //
 //	@Summary	List of tasks from the database
-//	@Tags		products
+//	@Tags		tasks
 //	@Accept		json
 //	@Produce	json
 //	@Success	200		{array}		response.Object
@@ -54,10 +54,10 @@ func (h *TasksHandler) list(w http.ResponseWriter, r *http.Request) {
 	response.OK(w, r, res)
 }
 
-// Add a new product to the database
+// Добавление новой задачи в БД
 //
 //	@Summary	Add a new tasks to the database
-//	@Tags		products
+//	@Tags		tasks
 //	@Accept		json
 //	@Produce	json
 //	@Param		request	body		tasks.Request	true	"body param"
@@ -81,7 +81,7 @@ func (h *TasksHandler) add(w http.ResponseWriter, r *http.Request) {
 	response.OK(w, r, res)
 }
 
-// Read the product from the database
+// Смена статуса задачи
 //
 //	@Summary	Read the tasks from the database
 //	@Tags		tasks
@@ -96,7 +96,7 @@ func (h *TasksHandler) status(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	req := tasks.Request{
-		Status: true, // Здесь укажите новое значение статуса
+		Status: true,
 	}
 
 	err := h.tasksService.GetStatus(r.Context(), id, req)
@@ -111,10 +111,10 @@ func (h *TasksHandler) status(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Update the product in the database
+// Обновление информации о задаче(сменить тайтл или актив тайм)
 //
 //	@Summary	Update the tasks in the database
-//	@Tags		products
+//	@Tags		tasks
 //	@Accept		json
 //	@Produce	json
 //	@Param		id		path	string			true	"path param"
@@ -145,10 +145,10 @@ func (h *TasksHandler) update(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Delete the product from the database
+// Удаление задачи из БД
 //
 //	@Summary	Delete the tasks from the database
-//	@Tags		products
+//	@Tags		tasks
 //	@Accept		json
 //	@Produce	json
 //	@Param		id	path	string	true	"path param"

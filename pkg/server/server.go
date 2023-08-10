@@ -17,18 +17,13 @@ type Server struct {
 	listener net.Listener
 }
 
-// Configuration is an alias for a function that will take in a pointer to a Repository and modify it
 type Configuration func(r *Server) error
 
-// New takes a variable amount of Configuration functions and returns a new Server
-// Each Configuration will be called in the order they are passed in
 func New(configs ...Configuration) (r *Server, err error) {
-	// Create the Server
+	// создаем сервер
 	r = &Server{}
 
-	// Apply all Configurations passed in
 	for _, cfg := range configs {
-		// Pass the service into the configuration function
 		if err = cfg(r); err != nil {
 			return
 		}

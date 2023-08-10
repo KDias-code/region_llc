@@ -13,6 +13,7 @@ import (
 	"product-service/internal/domain/tasks"
 )
 
+// здесь мы можем работать также с мемори, т.е. все будет работать без использования бд
 type TasksRepository struct {
 	db map[string]tasks.Entity
 	sync.RWMutex
@@ -24,6 +25,7 @@ func NewTasksRepository() *TasksRepository {
 	}
 }
 
+// вывод задач по сегодняшней дате
 func (r *TasksRepository) Select(ctx context.Context) (dest []tasks.Entity, err error) {
 	r.RLock()
 	defer r.RUnlock()
@@ -40,6 +42,7 @@ func (r *TasksRepository) Select(ctx context.Context) (dest []tasks.Entity, err 
 	return
 }
 
+// создаем задачу
 func (r *TasksRepository) Create(ctx context.Context, data tasks.Entity) (dest string, err error) {
 	r.Lock()
 	defer r.Unlock()
@@ -51,6 +54,7 @@ func (r *TasksRepository) Create(ctx context.Context, data tasks.Entity) (dest s
 	return id, nil
 }
 
+// смена статуса задачи
 func (r *TasksRepository) Status(ctx context.Context, id string, data tasks.Entity) (err error) {
 	r.Lock()
 	defer r.Unlock()
@@ -69,6 +73,7 @@ func (r *TasksRepository) Status(ctx context.Context, id string, data tasks.Enti
 	return
 }
 
+// удаление задачи из бд
 func (r *TasksRepository) Delete(ctx context.Context, id string) (err error) {
 	r.Lock()
 	defer r.Unlock()
@@ -81,6 +86,7 @@ func (r *TasksRepository) Delete(ctx context.Context, id string) (err error) {
 	return
 }
 
+// обновление тайтла и актив тайма
 func (r *TasksRepository) Update(ctx context.Context, id string, data tasks.Entity) (err error) {
 	r.Lock()
 	defer r.Unlock()
@@ -107,6 +113,7 @@ func (r *TasksRepository) Update(ctx context.Context, id string, data tasks.Enti
 	return
 }
 
+// генерим айдишку
 func (r *TasksRepository) generateID() string {
 	return uuid.New().String()
 }

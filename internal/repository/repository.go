@@ -7,25 +7,23 @@ import (
 	"product-service/pkg/store"
 )
 
-// Configuration is an alias for a function that will take in a pointer to a Repository and modify it
+// Конфигурация — это псевдоним для функции, которая принимает указатель на репозиторий и изменяет его.
 type Configuration func(r *Repository) error
 
-// Repository is an implementation of the Repository
+// Репозиторий — это реализация репозитория.
 type Repository struct {
 	postgres *store.Database
 
 	Tasks tasks.Repository
 }
 
-// New takes a variable amount of Configuration functions and returns a new Repository
-// Each Configuration will be called in the order they are passed in
 func New(configs ...Configuration) (s *Repository, err error) {
-	// Create the repository
+	// создаем репозиторий
 	s = &Repository{}
 
-	// Apply all Configurations passed in
+	// Применить все переданные конфигурации
 	for _, cfg := range configs {
-		// Pass the repository into the configuration function
+		// Передайте репозиторий в функцию конфигурации
 		if err = cfg(s); err != nil {
 			return
 		}
@@ -34,15 +32,15 @@ func New(configs ...Configuration) (s *Repository, err error) {
 	return
 }
 
-// Close closes the repository and prevents new queries from starting.
-// Close then waits for all queries that have started processing on the server to finish.
+// Close закрывает репозиторий и предотвращает запуск новых запросов.
+// Close затем ожидает завершения всех запросов, которые начали обрабатываться на сервере.
 func (r *Repository) Close() {
 	if r.postgres != nil {
 		r.postgres.Client.Close()
 	}
 }
 
-// WithMemoryStore applies a memory store to the Repository
+// WithMemoryStore применяет хранилище памяти к репозиторию
 func WithMemoryStore() Configuration {
 	return func(s *Repository) (err error) {
 		// Create the memory store, if we needed parameters, such as connection strings they could be inputted here
@@ -52,7 +50,7 @@ func WithMemoryStore() Configuration {
 	}
 }
 
-// WithPostgresStore applies a postgres store to the Repository
+// WithPostgresStore применяет хранилище postgres к репозиторию
 func WithPostgresStore(schema, dataSourceName string) Configuration {
 	return func(s *Repository) (err error) {
 		// Create the postgres store, if we needed parameters, such as connection strings they could be inputted here

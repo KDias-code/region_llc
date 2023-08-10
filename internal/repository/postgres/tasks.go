@@ -10,6 +10,7 @@ import (
 	"product-service/internal/domain/tasks"
 )
 
+// реализация всех методов с помощью постгрес
 type TasksRepository struct {
 	db *sqlx.DB
 }
